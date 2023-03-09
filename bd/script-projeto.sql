@@ -1,10 +1,11 @@
 /*
 TABELAS
 
-tabela usuario (id, nome da empresa, porte, cnpj, login, senha)
-tabela sensores (id, status)
-tabela prateleira (id, descricao, seção)
-
+tabela usuario (idUsuario, nome da empresa, porte, cnpj, login, senha)
+tabela histórico (idHistorico, dataHora)
+tabela prateleira (idPrateleira, corredor, setor, obs, fk_produto)
+tabela sensores (idSensor, bloqueio, status, fk_prateleira, fk_historico)
+tabela produto (idProduto, nome, descricao, marca, volume)
 */
 
 create database db_helpstock;
@@ -21,19 +22,23 @@ create table usuario (
     constraint chkPorte check (porte in('Pequeno', 'Médio', 'Grande'))
 );
 
-create table sensor (
-	idSensor int primary key auto_increment,
-    sttSensor varchar(20),
-    bloqueio tinyint,
-    constraint chkSttSensor check (sttSensor in('Em funcionamento', 'Em manutenção', 'Desativado')),
-    constraint chkBloqueio check (bloqueio in(0, 1))
+create table produto(
+	idProduto int primary key auto_increment, 
+    nome varchar(80), 
+    descricao text(700), 
+    marca varchar(50),
+    medida varchar(5),
+    volume decimal(5, 2),
+	constraint chkMedida check(medida in ("kg", "L", "ml", "g"))
 );
 
 create table prateleira (
 	idPrateleira int primary key auto_increment,
+    idProduto int,
     corredor varchar(20),
-    secao varchar(20),
-    descricao varchar(100)
+    setor varchar(20),
+    obs text(700),
+    constraint fk_produto foreign key (idProduto) references produto(idProduto)
 );
 
 create table historico(
@@ -41,26 +46,14 @@ create table historico(
     dataHora datetime default current_timestamp
 );
 
--- INSERÇÃO DE DADOS
-insert into usuario (nomeEmpresa, cnpj, email, senha) values 
-	('Atacadão', '11.333.444/0001-22', 'atacadao@gmail.com', '12345678'),
-    ('Extra', '88.111.999/0001-55', 'extra@hotmail.com', '0987654321');
-
-insert into sensor( sttSensor, bloqueio) values 
-	('Em funcionamento', 1),
-    ('Em manutenção', 0);
-    
-INSERT INTO prateleira (secao, descricao, corredor) VALUES
-	('Produtos de Limpeza', 'Amaciante OMO', '4'),
-    ('Bebidas', 'Coca-cola', 'A');
-    
-INSERT INTO historico (idHistorico) VALUES 
-	(NULL),
-    (NULL);
-    
-
--- CONSULTAS    
-SELECT * FROM sensor;
-SELECT * FROM usuario;
-SELECT * FROM prateleira;
-SELECT * FROM historico;
+create table sensor (
+	idSensor int primary key auto_increment,
+    idHistorico int,
+    idPrateleira int,
+    sttSensor varchar(20),
+    bloqueio tinyint,
+    constraint chkSttSensor check (sttSensor in('Em funcionamento', 'Em manutenção', 'Desativado')),
+    constraint chkBloqueio check (bloqueio in(0, 1)),
+    constraint fk_historico foreign key (idHistorico) references historico (idHistorico),
+	constraint fk_prateleira foreign key (idPrateleira) references prateleira (idPrateleira)
+);
