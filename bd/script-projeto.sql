@@ -84,16 +84,16 @@ insert into prateleira (idProduto, corredor, setor, obs) values
     (0120, '07', 'Cereais', 'Se encontra de frente para os produtos x'),
     (0442, '04', 'Alimentício', 'Entre os produtos X e Y');
 
-insert into sensor (idPrateleira, sttSensor, bloqueio) values
-	(1, 'Em funcionamento', 1),
-    (1, 'Em funcionamento', 1),
-    (1, 'Em funcionamento', 0),
-    (2, 'Em funcionamento', 0),
-    (2, 'Desativado', 0),
-    (2, 'Em manutenção', 0),
-	(3, 'Em funcionamento', 1),
-    (3, 'Em funcionamento', 0),
-    (3, 'Em funcionamento', 0);
+insert into sensor (idPrateleira, sttSensor) values
+	(1, 'Em funcionamento'),
+    (1, 'Em funcionamento'),
+    (1, 'Em funcionamento'),
+    (2, 'Em funcionamento'),
+    (2, 'Desativado'),
+    (2, 'Em manutenção'),
+	(3, 'Em funcionamento'),
+    (3, 'Em funcionamento'),
+    (3, 'Em funcionamento');
 
 insert into historico (idSensor, dataHora) values
 	(1, DEFAULT),
