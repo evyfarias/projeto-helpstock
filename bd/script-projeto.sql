@@ -2,10 +2,11 @@
 TABELAS
 
 tabela usuario (idUsuario, nome da empresa, porte, cnpj, login, senha)
-tabela histórico (idHistorico, dataHora)
+tabela produto (idProduto, nome, descricao, marca, volume)
 tabela prateleira (idPrateleira, corredor, setor, obs, fk_produto)
 tabela sensores (idSensor, bloqueio, status, fk_prateleira, fk_historico)
-tabela produto (idProduto, nome, descricao, marca, volume)
+tabela histórico (idHistorico, dataHora)
+
 */
 
 create database db_helpstock;
@@ -23,7 +24,7 @@ create table usuario (
 );
 
 create table produto(
-	idProduto int primary key auto_increment, 
+	idProduto int primary key, 
     nome varchar(80), 
     descricao text(700), 
     marca varchar(50),
@@ -41,19 +42,45 @@ create table prateleira (
     constraint fk_produto foreign key (idProduto) references produto(idProduto)
 );
 
-create table historico(
-	idHistorico int primary key auto_increment,
-    dataHora datetime default current_timestamp
-);
-
 create table sensor (
 	idSensor int primary key auto_increment,
-    idHistorico int,
     idPrateleira int,
     sttSensor varchar(20),
     bloqueio tinyint,
     constraint chkSttSensor check (sttSensor in('Em funcionamento', 'Em manutenção', 'Desativado')),
     constraint chkBloqueio check (bloqueio in(0, 1)),
-    constraint fk_historico foreign key (idHistorico) references historico (idHistorico),
 	constraint fk_prateleira foreign key (idPrateleira) references prateleira (idPrateleira)
 );
+
+create table historico(
+	idHistorico int primary key auto_increment,
+    idSensor int,
+    dataHora datetime default current_timestamp,
+	constraint fk_sensor foreign key (idSensor) references sensor (idSensor)
+);
+
+
+-- INSERTS 
+-- tabela usuario (idUsuario, nome da empresa, porte, cnpj, email, senha)
+insert into usuario (nomeEmpresa, porte, cnpj, email, senha) values
+	('Atacadão', 'Grande', '75.315.333/0001-09', 'atacadao@outlook.com', 'senha123456*'),
+    ('Mercado Km25', 'Médio', '21.558.222/0001-07', 'km25mercado@gmail.com', 'km25senha#'),
+    ('Carrefour Express', 'Pequeno', '19.245.555/0001-15', 'carrefour@outlook.com', '12345678!');
+    
+-- tabela produto (idProduto, nome, descricao, marca, volume)
+/*
+idProduto int primary key, 
+    nome varchar(80), 
+    descricao text(700), 
+    marca varchar(50),
+    medida varchar(5),
+    volume decimal(5, 2)
+*/
+insert into produto values 
+	(0001, 'Desinfetante Multiuso', 'Produto de limpeza', 'Veja', 'L', '2.00');
+
+-- tabela sensores (idSensor, bloqueio, status, fk_prateleira, fk_historico)
+
+
+
+
