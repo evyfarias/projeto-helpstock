@@ -4,8 +4,8 @@ TABELAS
 tabela usuario (idUsuario, nome da empresa, porte, cnpj, login, senha)
 tabela produto (idProduto, nome, descricao, marca, volume)
 tabela prateleira (idPrateleira, corredor, setor, obs, fk_produto)
-tabela sensores (idSensor, bloqueio, status, fk_prateleira, fk_historico)
-tabela histórico (idHistorico, dataHora)
+tabela sensores (idSensor, status, fk_prateleira, )
+tabela histórico (idHistorico, dataHora, bloqueio, fk_sensor)
 
 */
 
@@ -46,16 +46,18 @@ create table sensor (
 	idSensor int primary key auto_increment,
     idPrateleira int,
     sttSensor varchar(20),
-    bloqueio tinyint,
     constraint chkSttSensor check (sttSensor in('Em funcionamento', 'Em manutenção', 'Desativado')),
-    constraint chkBloqueio check (bloqueio in(0, 1)),
 	constraint fk_prateleira foreign key (idPrateleira) references prateleira (idPrateleira)
 );
+
+
 
 create table historico(
 	idHistorico int primary key auto_increment,
     idSensor int,
+    bloqueio tinyint,
     dataHora datetime default current_timestamp,
+    constraint chkBloqueio check (bloqueio in(0, 1)),
 	constraint fk_sensor foreign key (idSensor) references sensor (idSensor)
 );
 
@@ -65,7 +67,7 @@ insert into usuario (nomeEmpresa, porte, cnpj, email, senha) values
 	('Atacadão', 'Grande', '75.315.333/0001-09', 'atacadao@outlook.com', 'senha123456*'),
     ('Mercado Km25', 'Médio', '21.558.222/0001-07', 'km25mercado@gmail.com', 'km25senha#'),
     ('Carrefour Express', 'Pequeno', '19.245.555/0001-15', 'carrefour@outlook.com', '12345678!');
-
+    
 insert into produto values 
 	(0001, 'Desinfetante Multiuso', 'Higiene e limpeza', 'Veja', 'ml', '500'),
     (0023, 'Refrigerante guaraná', 'Adega e bebidas', 'Veja', 'L', '2.00'),
