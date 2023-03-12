@@ -30,6 +30,7 @@ create table produto(
     marca varchar(50),
     medida varchar(5),
     volume decimal(5, 2),
+    flxCaixa int, 
 	constraint chkMedida check(medida in ("kg", "L", "ml", "g"))
 );
 
@@ -37,8 +38,11 @@ create table prateleira (
 	idPrateleira int primary key auto_increment,
     idProduto int,
     corredor varchar(20),
+    nivel varchar(20),
     setor varchar(20),
     obs text(700),
+    volumePrateleira int,
+    constraint chkNivel check(nivel in ("Cheia", "Vazia", "Esvaziando")),
     constraint fk_produto foreign key (idProduto) references produto(idProduto)
 );
 
@@ -49,8 +53,6 @@ create table sensor (
     constraint chkSttSensor check (sttSensor in('Em funcionamento', 'Em manutenção', 'Desativado')),
 	constraint fk_prateleira foreign key (idPrateleira) references prateleira (idPrateleira)
 );
-
-
 
 create table historico(
 	idHistorico int primary key auto_increment,
@@ -69,64 +71,86 @@ insert into usuario (nomeEmpresa, porte, cnpj, email, senha) values
     ('Carrefour Express', 'Pequeno', '19.245.555/0001-15', 'carrefour@outlook.com', '12345678!');
     
 insert into produto values 
-	(0001, 'Desinfetante Multiuso', 'Higiene e limpeza', 'Veja', 'ml', '500'),
-    (0023, 'Refrigerante guaraná', 'Adega e bebidas', 'Veja', 'L', '2.00'),
-    (0120, 'Bolacha Recheada Passatempo', 'Cereais', 'Nestle', 'g', '2.00'),
-    (0009, 'Refri. Coca Cola', 'Adega e bebidas', 'Coca Cola', 'L', '2.00'),
-    (0442, 'Arroz', 'Alimentos', 'Camil', 'Kg', '5.00'),
-    (0050, 'Feijão', 'Alimentos', 'Camil', 'Kg', '2.00');
+	(0001, 'Desinfetante Multiuso', 'Higiene e limpeza', 'Veja', 'ml', '500', 100),
+    (0023, 'Refrigerante guaraná', 'Adega e bebidas', 'Veja', 'L', '2.00', 200),
+    (0120, 'Bolacha Recheada Passatempo', 'Cereais', 'Nestle', 'g', '2.00', 400),
+    (0009, 'Refri. Coca Cola', 'Adega e bebidas', 'Coca Cola', 'L', '2.00', 50),
+    (0442, 'Arroz', 'Alimentos', 'Camil', 'Kg', '5.00', 30),
+    (0050, 'Feijão', 'Alimentos', 'Camil', 'Kg', '2.00', 40);
 
-insert into prateleira (idProduto, corredor, setor, obs) values
-	(0023, '09', 'Bebidas', 'O produto se localiza no centro da prateleiera'),
-    (0001, '02', 'Higiene Limpeza', 'O produto se localiza no início da prateleiera'),
-    (0009, '09', 'Bebidas', 'O produto se localiza nas prateleiras de cima'),
-    (0050, '04', 'Alimentício', 'Presente nas prateleiras de baixo'),
-    (0120, '07', 'Cereais', 'Se encontra de frente para os produtos x'),
-    (0442, '04', 'Alimentício', 'Entre os produtos X e Y');
+insert into prateleira (idProduto, corredor, nivel, setor, obs, volumePrateleira) values
+	(0023, '09', 'Cheia',  'Bebidas', 'O produto se localiza no centro da prateleiera', 100),
+    (0001, '02', 'Esvaziando','Higiene Limpeza', 'O produto se localiza no início da prateleiera', 50),
+    (0009, '09', 'Vazia', 'Bebidas', 'O produto se localiza nas prateleiras de cima', 0),
+    (0050, '04', 'Cheia', 'Alimentos', 'Presente nas prateleiras de baixo', 60),
+    (0120, '07', 'Vazia', 'Cereais', 'Se encontra de frente para os produtos x', 0),
+    (0442, '04', 'Esvaziando', 'Alimentos', 'Entre os produtos X e Y', 30);
 
 insert into sensor (idPrateleira, sttSensor) values
 	(1, 'Em funcionamento'),
     (1, 'Em funcionamento'),
     (1, 'Em funcionamento'),
     (2, 'Em funcionamento'),
-    (2, 'Desativado'),
-    (2, 'Em manutenção'),
+    (2, 'Em funcionamento'),
+    (2, 'Em funcionamento'),
 	(3, 'Em funcionamento'),
     (3, 'Em funcionamento'),
-    (3, 'Em funcionamento');
+    (3, 'Em funcionamento'),
+	(4, 'Em funcionamento'),
+    (4, 'Em funcionamento'),
+    (4, 'Em funcionamento'),
+    (5, 'Em funcionamento'),
+    (5, 'Em funcionamento'),
+    (5, 'Em funcionamento'),
+    (6, 'Em funcionamento'),
+    (6, 'Em funcionamento'),
+    (6, 'Em funcionamento');
 
-insert into historico (idSensor, dataHora) values
-	(1, DEFAULT),
-    (2, DEFAULT),
-    (3, DEFAULT),
-    (4, DEFAULT),
-    (5, DEFAULT),
-    (6, DEFAULT);
+insert into historico (idSensor, dataHora, bloqueio) values
+	(1, DEFAULT, 1),
+    (2, DEFAULT, 1),
+    (3, DEFAULT, 1),
     
-SELECT * FROM usuario;
-SELECT * FROM produto;    
-SELECT * FROM prateleira; 
-SELECT * FROM sensor; 
-SELECT * FROM historico;
+    (4, DEFAULT, 1),
+    (5, DEFAULT, 0),
+    (6, DEFAULT, 0),
+    
+	(7, DEFAULT, 0),
+    (8, DEFAULT, 0),
+    (9, DEFAULT, 0),
+    
+    (10, DEFAULT, 1),
+    (11, DEFAULT, 1),
+    (12, DEFAULT, 1),
+    
+    (13, DEFAULT, 0),
+    (14, DEFAULT, 0),
+    (15, DEFAULT, 0),
+    
+    (16, DEFAULT, 1),
+    (17, DEFAULT, 0),
+    (18, DEFAULT, 0);
+    
+  -- MOSTRAR PRATELEIRAS E SEUS PRODUTOS
+SELECT idPrateleira, idProduto FROM prateleira; 
 
--- SELECIONAR OS SENSORES DA PRATELEIRA ID = 1 
-SELECT idSensor FROM sensor WHERE idPrateleira = 1; 
-
+ -- MOSTRAR INFORMAÇÕES DO PRODUTO QUE ESTÁ VINCULADO A PRATELEIRA id = 2
+ SELECT * FROM produto WHERE idProduto = 1;
+ 
 -- NIVÉL DA PRATELEIRA ID = 2
-SELECT idSensor, bloqueio FROM sensor WHERE idPrateleira = 2;
+SELECT nivel FROM prateleira WHERE idPrateleira = 2;
 
--- O INFORMAÇÕES DO PRODUTO DA PRATELEIRA ID = 3
-SELECT idProduto FROM prateleira WHERE idPrateleira = 3;
-SELECT * FROM produto WHERE idProduto = 9;
+ -- MOSTRAR SE TEM ALGO NESSA PRATELEIRA ATRÁVES DO SENSOR DE BLOQUEIO
+SELECT idSensor FROM sensor WHERE idPrateleira = 2; 
+SELECT idSensor, bloqueio, dataHora FROM historico WHERE idSensor IN (4, 5, 6); 
 
--- HISTÓRICO DOS SENSORES 1,2,3 = prateleira 1
-SELECT dataHora, idSensor FROM historico WHERE idSensor IN(1, 2, 3);
+-- MOSTRAR O NÍVEL DA PRATELEIRA DO PRODUTO REFRI COCA COLA ÁS 16:05 DO DIA 12/03/2023
+SELECT idProduto FROM produto WHERE nome = 'Refri. Coca Cola';
+SELECT idPrateleira, idProduto FROM prateleira WHERE idProduto = 9;
+SELECT idSensor FROM sensor WHERE idPrateleira = 3; 
+SELECT idSensor, bloqueio, dataHora FROM historico WHERE dataHora = '2023-03-12 18:16:05' AND idSensor IN (7, 8, 9);
 
--- SELECIONAR TODAS AS PRATELEIRAS DO SETOR DE BEBIDAS E CHECAR O NIVÉL DE PRODUTOS DELAS
-SELECT * FROM prateleira WHERE setor ='Bebidas';
-SELECT idPrateleira, bloqueio FROM sensor WHERE idPrateleira IN(1, 3);
 
-    
 
 
 
