@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Financeiro</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="card">
+        <h3>Calculadora Financeira</h3>
+        <p>Porte do estabelecimento: <input id="input_porte"></p>
+        <p>Renda: <input id="input_renda"></p>
+        <button onclick="simular()">Simular</button>
+        <div id="div_simular"></div>
+    </div>
+</body>
+</html>
+<script>
+    function simular() {
+        var porte = input_porte.value;
+        var renda = Number(input_renda.value);
+        var lucro; 
+
+        if(porte == 'pequeno'){
+            if(renda => 30000){   
+                lucro = renda + ((renda * 10)/100);
+            }
+            if(renda < 30000){
+                lucro = 30000 + ((30000 * 10)/100);
+            }
+        }
+
+        if(porte == 'medio'){
+            if(renda => 1000000){
+                lucro = renda + ((renda * 10)/100);
+            }
+            if(renda < 1000000){
+                lucro = 1000000 + ((1000000 * 10)/100);
+            }
+        }
+
+        if(porte == 'grande'){
+            if(renda => 3000000){
+                lucro = renda + ((renda * 10)/100);
+            }
+            if(renda < 3000000){
+                lucro = 3000000 + ((3000000 * 10)/100);
+            }
+            
+        }
+
+
+        div_simular.innerHTML = `<div class="frase"><b>Com o nosso software implementado em seu estabelecimento, evitaremos a ruptura de produtos, 
+                                assim aumentando o faturamento estimado para R$${lucro}. <br>
+                                Sendo possível fazer automáticamente o giro de estoque mensal, 
+                                mostrando quais mercadorias estão mais paradas e quais estão lucrando mais.</b></div>`;
+    }
+</script>
