@@ -1,0 +1,35 @@
+.card {
+    margin-left: 400px;
+    margin-top: 50px;
+    width: 400px;
+    padding: 20px;
+    border: solid 2px orange;
+    border-radius: 10px;
+    background-color: #2e6286;
+}
+
+h3 {
+    margin-left: 90px;
+}
+
+button{
+    margin-left: 120px;
+    border-radius: 8px;
+    width: 150px;
+    background-color: orange;
+    border: solid 2px #234156;
+}
+
+input{
+    border-radius: 5px;
+    border: solid 2px #234156;
+}
+
+body {
+    background-color: #234156;;
+}
+
+.frase {
+    border-top: solid 2px orange;
+    margin-top: 5px;
+}
