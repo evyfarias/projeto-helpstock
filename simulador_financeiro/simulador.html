@@ -11,9 +11,9 @@
 
 <body>
     <div class="card">
-        <h2>Calculadora Financeira</h2>
+        <h2>Simulador Financeiro</h2>
 
-        <h3>Selecione  um produto do seu estabelecemento, cujo o volume de vendas você considere alto. <br>
+        <h3>Selecione  um produto do seu estabelecimento, cujo o volume de vendas você considere alto. <br>
         Pediremos algumas informações sobre o fluxo de saída dele, e te mostraremos que sua empresa pode faturar muito mais.</h3>
 
         <p>Nome do produto: <input id="input_nome"></p>
@@ -21,7 +21,7 @@
         <p>Preço: <input id="input_valor"></p>
         <p>Quantas vezes é necessária a reposição desse produto no dia: <input id="input_reposicao"></p>
         <p>Tempo mínimo gasto para repor (em minutos): <input id="input_tempoRp"></p>
-        <p>Quanto tempo demora para a prateleira desse produto ficar vazia(em minutos): <input id="input_tmpPrateleira"></p>
+        <p>Quanto tempo demora para a prateleira desse produto ficar vazia (em minutos): <input id="input_tmpPrateleira"></p>
 
         <button onclick="simular()">Simular</button>
         <div id="div_simular"></div>
@@ -63,9 +63,9 @@
             <p>Você faturou R$${total} com o produto ${nome}. <br>
 
             <p>Você vendeu <b>${qtdeVendida} unidades</b> desse produto em ${tmpPrateleiraVazia} minutos, 
-            pois foi o tempo que levou para a prateleira ficar vazia, sendo assim estima-se que foi vendido${pV_min} produtos por minuto. <br>
+            pois foi o tempo que levou para a prateleira ficar vazia, sendo assim estima-se que foi vendido ${pV_min} produtos por minuto. <br>
 
-            <p>Se seu funcinário leva ${tmpReposicao} minutos para repor e é necessário essa reposição ${qtdeReposicao} vezes no dia, você deixou de vender ${qtdPerdido__tempoRps} produtos nesse período de tempo.
+            <p>Se seu funcionário leva ${tmpReposicao} minutos para repor e é necessário essa reposição ${qtdeReposicao} vezes no dia, você deixou de vender ${qtdPerdido__tempoRps} produtos nesse período de tempo.
             
             <p>Segundo AC Nielsen, por conta da ruptura há uma queda de 5% a 10% de vendas. Portanto, de um período de ${tmpPrateleiraVazia} minutos, <b>NO MÍNIMO ${tmpPrateleiraVazia * 0.075} MINUTOS</b>  essa prateleira ficou vazia.<br>  
             <br>Nesse tempo, foi deixado de vender ${qtdPerdido_prateleiraVazia} produtos.
