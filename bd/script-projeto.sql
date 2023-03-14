@@ -18,8 +18,9 @@ create table usuario (
     nomeEmpresa varchar(100),
     porte varchar(20),
     cnpj varchar(20),
-    email varchar(100),
+    login varchar(100),
     senha varchar(50),
+	-- constraint para verificar o porte do estabelecimento
     constraint chkPorte check (porte in('Pequeno', 'Médio', 'Grande'))
 );
 
@@ -31,40 +32,53 @@ create table produto(
     medida varchar(5),
     volume decimal(5, 2),
     flxCaixa int, 
+    -- constraint para verificar as medidas válidas
 	constraint chkMedida check(medida in ("kg", "L", "ml", "g"))
 );
 
 create table prateleira (
 	idPrateleira int primary key auto_increment,
+    -- campo da chave estrangeira
     idProduto int,
+    
     corredor varchar(20),
     nivel varchar(20),
     setor varchar(20),
     obs text(700),
     volumePrateleira int,
+    -- constraint de verificação de nível da prateleira
     constraint chkNivel check(nivel in ("Cheia", "Vazia", "Esvaziando")),
+    -- constraint que define o campo como sendo chave primária de outra tabela
     constraint fk_produto foreign key (idProduto) references produto(idProduto)
 );
 
 create table sensor (
 	idSensor int primary key auto_increment,
+    -- campo da chave estrangeira
     idPrateleira int,
+    
     sttSensor varchar(20),
+    -- verificação de status
     constraint chkSttSensor check (sttSensor in('Em funcionamento', 'Em manutenção', 'Desativado')),
-	constraint fk_prateleira foreign key (idPrateleira) references prateleira (idPrateleira)
+	-- constraint da chave estrangeira
+    constraint fk_prateleira foreign key (idPrateleira) references prateleira (idPrateleira)
 );
 
 create table historico(
 	idHistorico int primary key auto_increment,
+    -- chave estrangeira
     idSensor int,
+    
     bloqueio tinyint,
     dataHora datetime default current_timestamp,
+    -- bloqueio só pode ser 0 ou 1
     constraint chkBloqueio check (bloqueio in(0, 1)),
+	-- constraint da chave estrangeira
 	constraint fk_sensor foreign key (idSensor) references sensor (idSensor)
 );
 
 -- INSERTS 
--- tabela usuario (idUsuario, nome da empresa, porte, cnpj, email, senha)
+-- Usuários
 insert into usuario (nomeEmpresa, porte, cnpj, email, senha) values
 	('Atacadão', 'Grande', '75.315.333/0001-09', 'atacadao@outlook.com', 'senha123456*'),
     ('Mercado Km25', 'Médio', '21.558.222/0001-07', 'km25mercado@gmail.com', 'km25senha#'),
